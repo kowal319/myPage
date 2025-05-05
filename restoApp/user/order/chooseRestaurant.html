@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Choose Restaurant</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('/myPage/restoApp/tlo.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar-custom {
+      background-color: #f9a825;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-custom .nav-links a {
+      margin-left: 20px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .brand {
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .header-container {
+      text-align: center;
+      color: white;
+      margin-top: 40px;
+    }
+
+    .header-text {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .subheader-text {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .card-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+    }
+
+    .card {
+      width: 60%;
+      border: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+      background-color: white;
+      border-radius: 4px;
+      padding: 20px;
+    }
+
+    .add-to-cart-btn {
+      padding: 10px 20px;
+    }
+
+    .btn {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar-custom">
+  <div class="brand">RestoApp</div>
+  <div class="nav-links">
+    <a href="userDetails.html">My Profile</a>
+    <a href="orderHistory.html">My Orders</a>
+    <a href="#">Start Order</a>
+    <a href="../userChoose.html">Logout</a>
+  </div>
+</div>
+
+<!-- Header Text -->
+<div class="header-container">
+  <div class="header-text">Please choose below RESTAURANT you are sitting in.</div>
+  <div class="subheader-text">Check it carefully, every restaurant has its number of available tables.</div>
+</div>
+
+<!-- Restaurant Cards -->
+<div class="container">
+
+  <!-- Example 1 -->
+  <div class="card-container">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Resto Zamojska</h5>
+        <p class="card-text">Address: 05-200 Warszawa, ul. Zamojska 123</p>
+        <p class="card-text">Email: zamojska@resto.com</p>
+        <p class="card-text">Phone Number: 123-456-789</p>
+        <p class="card-text">Number of tables: 12</p>
+        <div class="add-to-cart-btn">
+          <a href="chooseTable.html?restaurantId=1" class="btn btn-primary">Choose Restaurant</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example 2 -->
+  <div class="card-container">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Resto Nowogrodzka</h5>
+        <p class="card-text">Address: 05-200 Warszawa, ul. Nowogrodzka 13</p>
+        <p class="card-text">Email: nowogrodzka@resto.com</p>
+        <p class="card-text">Phone Number: 234-567-890</p>
+        <p class="card-text">Number of tables: 10</p>
+        <div class="add-to-cart-btn">
+          <a href="chooseTable.html?restaurantId=2" class="btn btn-primary">Choose Restaurant</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example 3 -->
+  <div class="card-container">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Resto Jesionowa</h5>
+        <p class="card-text">Address: 05-240 Warszawa, ul. Jesionowa 123</p>
+        <p class="card-text">Email: jesionowa@resto.com</p>
+        <p class="card-text">Phone Number: 345-678-901</p>
+        <p class="card-text">Number of tables: 15</p>
+        <div class="add-to-cart-btn">
+          <a href="chooseTable.html?restaurantId=3" class="btn btn-primary">Choose Restaurant</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example 4 -->
+  <div class="card-container">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Resto Belwederska</h5>
+        <p class="card-text">Address: 05-010 Warszawa, ul. Belwederska 123</p>
+        <p class="card-text">Email: belwederska@resto.com</p>
+        <p class="card-text">Phone Number: 456-789-012</p>
+        <p class="card-text">Number of tables: 8</p>
+        <div class="add-to-cart-btn">
+          <a href="chooseTable.html?restaurantId=4" class="btn btn-primary">Choose Restaurant</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+<script>
+  document.querySelectorAll('.btn-primary').forEach(button => {
+    button.addEventListener('click', function (e) {
+      const url = new URL(this.href);
+      const restaurantId = url.searchParams.get('restaurantId');
+
+      const restaurantName = this.closest('.card-body').querySelector('h5.card-title').innerText;
+
+      sessionStorage.setItem('selectedRestaurantId', restaurantId);
+      sessionStorage.setItem('selectedRestaurantName', restaurantName);
+    });
+  });
+</script>
+</html>
