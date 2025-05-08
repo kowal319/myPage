@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('/myPage/restoApp/tlo.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    .navbar-custom {
+      background-color: #f9a825;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-custom .nav-links a {
+      margin-left: 20px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .brand {
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .header-container {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .header-text {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .menu-section {
+      background-color: rgba(255, 255, 255, 0.9);
+      color: black;
+      margin: 20px auto;
+      padding: 20px;
+      width: 90%;
+      border-radius: 10px;
+    }
+
+    .product {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .product:last-child {
+      border-bottom: none;
+    }
+
+    .product-info {
+      flex-grow: 1;
+    }
+
+    .product-name {
+      font-weight: bold;
+    }
+
+    .product-price {
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    .add-btn {
+      background-color: #f9a825;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .cart-summary {
+      text-align: right;
+      margin: 20px 40px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .btn-cart-view {
+      display: block;
+      margin: 10px auto;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar-custom">
+  <div class="brand">RestoApp</div>
+  <div class="nav-links">
+    <a href="userDetails.html">My Profile</a>
+    <a href="orderHistory.html">My Orders</a>
+    <a href="chooseTable.html">Change Table</a>
+    <a href="../userChoose.html">Logout</a>
+  </div>
+</div>
+
+<!-- Header -->
+<div class="header-container">
+  <div class="header-text">Menu for Table #<span id="selectedTableNumber"></span></div>
+</div>
+
+<!-- Cart Summary -->
+<div class="cart-summary">
+  Items: <span id="cart-count">0</span> | Total: <span id="cart-sum">0.00</span> zł
+</div>
+
+<!-- Menu Sections -->
+<div class="container">
+
+  <!-- Pizza -->
+  <div class="menu-section">
+    <h4>🍕 Pizza</h4>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Margherita</div>
+        <div>Pomidor, ser, bazylia</div>
+      </div>
+      <div>
+        <div class="product-price">25.00 zł</div>
+        <button class="add-btn" data-name="Margherita" data-price="25">+</button>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Capricciosa</div>
+        <div>Szynka, pieczarki, ser</div>
+      </div>
+      <div>
+        <div class="product-price">29.00 zł</div>
+        <button class="add-btn" data-name="Capricciosa" data-price="29">+</button>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Diavola</div>
+        <div>Salami, ser, papryczki chili</div>
+      </div>
+      <div>
+        <div class="product-price">32.00 zł</div>
+        <button class="add-btn" data-name="Diavola" data-price="32">+</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Makarony -->
+  <div class="menu-section">
+    <h4>🍝 Makarony</h4>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Spaghetti Bolognese</div>
+        <div>Mięso wołowe, sos pomidorowy</div>
+      </div>
+      <div>
+        <div class="product-price">30.00 zł</div>
+        <button class="add-btn" data-name="Spaghetti Bolognese" data-price="30">+</button>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Penne Alfredo</div>
+        <div>Śmietanowy sos, parmezan</div>
+      </div>
+      <div>
+        <div class="product-price">28.00 zł</div>
+        <button class="add-btn" data-name="Penne Alfredo" data-price="28">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Burgery -->
+  <div class="menu-section">
+    <h4>🍔 Burgery</h4>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Classic Burger</div>
+        <div>Wołowina, sałata, pomidor</div>
+      </div>
+      <div>
+        <div class="product-price">27.00 zł</div>
+        <button class="add-btn" data-name="Classic Burger" data-price="27">+</button>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Veggie Burger</div>
+        <div>Warzywny kotlet, sos tahini</div>
+      </div>
+      <div>
+        <div class="product-price">26.00 zł</div>
+        <button class="add-btn" data-name="Veggie Burger" data-price="26">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desery -->
+  <div class="menu-section">
+    <h4>🍰 Desery</h4>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Tiramisu</div>
+        <div>Włoski deser kawowy</div>
+      </div>
+      <div>
+        <div class="product-price">14.00 zł</div>
+        <button class="add-btn" data-name="Tiramisu" data-price="14">+</button>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Sernik</div>
+        <div>Z owocami sezonowymi</div>
+      </div>
+      <div>
+        <div class="product-price">13.00 zł</div>
+        <button class="add-btn" data-name="Sernik" data-price="13">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Napoje -->
+  <div class="menu-section">
+    <h4>🥤 Napoje</h4>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Coca-Cola</div>
+        <div>330ml</div>
+      </div>
+      <div>
+        <div class="product-price">6.00 zł</div>
+        <button class="add-btn" data-name="Coca-Cola" data-price="6">+</button>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Woda niegazowana</div>
+        <div>500ml</div>
+      </div>
+      <div>
+        <div class="product-price">5.00 zł</div>
+        <button class="add-btn" data-name="Woda niegazowana" data-price="5">+</button>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Sok pomarańczowy</div>
+        <div>250ml</div>
+      </div>
+      <div>
+        <div class="product-price">7.00 zł</div>
+        <button class="add-btn" data-name="Sok pomarańczowy" data-price="7">+</button>
+      </div>
+    </div>
+    <div class="product">
+      <div class="product-info">
+        <div class="product-name">Lemoniada</div>
+        <div>Domowa, 300ml</div>
+      </div>
+      <div>
+        <div class="product-price">8.00 zł</div>
+        <button class="add-btn" data-name="Lemoniada" data-price="8">+</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Cart View -->
+<a href="cart.html" class="btn-cart-view">Go to Cart</a>
+
+<script>
+  const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+
+  function updateCartUI() {
+    document.getElementById('cart-count').textContent = cart.length;
+    const sum = cart.reduce((acc, item) => acc + item.price, 0).toFixed(2);
+    document.getElementById('cart-sum').textContent = sum;
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  document.querySelectorAll('.add-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const name = button.getAttribute('data-name');
+      const price = parseFloat(button.getAttribute('data-price'));
+      cart.push({ name, price });
+      updateCartUI();
+    });
+  });
+
+  // Pokaz numer stolika z sessionStorage
+  const tableNum = sessionStorage.getItem('selectedTableId');
+  document.getElementById('selectedTableNumber').textContent = tableNum || '?';
+
+  // Inicjalne uaktualnienie UI
+  updateCartUI();
+</script>
+
+</body>
+</html>
