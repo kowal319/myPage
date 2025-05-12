@@ -313,7 +313,7 @@
     });
   });
 
-  // Pokaz numer stolika z sessionStorage
+  // Pokaz numer stolika i nazwe restauracji z sessionStorage
   const tableNum = sessionStorage.getItem('selectedTableId');
   document.getElementById('selectedTableNumber').textContent = tableNum || '?';
 
@@ -323,6 +323,7 @@
 
   // Inicjalne uaktualnienie UI
   updateCartUI();
+
 </script>
 
 </body>

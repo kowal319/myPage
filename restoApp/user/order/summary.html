@@ -120,6 +120,8 @@
 
   <div class="info" id="restaurantInfo">Restaurant: </div>
   <div class="info" id="tableInfo">Table: </div>
+  <p>💳 Payment Method: <span id="paymentMethodDisplay"></span></p>
+
 
   <table id="cartTable">
     <thead>
@@ -136,50 +138,41 @@
 
   <div class="summary-total" id="cartTotal">Total: 0 zł</div>
 
-  <a href="cart.html" class="back-btn">← Back to Cart</a>
-  <a href="#" class="confirm-btn">Confirm Order</a>
+  <a href="paymentMethod.html" class="back-btn">← Back to Payment Method</a>
+  <a href="#" class="confirm-btn">Place Order</a>
 </div>
 
 <script>
-  const restaurantName = sessionStorage.getItem("selectedRestaurantName");
-  const tableId = sessionStorage.getItem("selectedTableId");
+  document.getElementById('placeOrderBtn').addEventListener('click', () => {
+    const paymentMethod = sessionStorage.getItem('selectedPaymentMethod');
+    const cart = sessionStorage.getItem('cart');
+    const restaurant = sessionStorage.getItem('selectedRestaurantName');
+    const table = sessionStorage.getItem('selectedTableId');
 
-  document.getElementById("restaurantInfo").textContent = "Restaurant: " + (restaurantName || "Not selected");
-  document.getElementById("tableInfo").textContent = "Table: " + (tableId || "Not selected");
+    const order = {
+      restaurant: restaurant || "Unknown",
+      table: table || "Unknown",
+      paymentMethod: paymentMethod || "Unknown",
+      items: JSON.parse(cart) || [],
+      timestamp: new Date().toISOString()
+    };
 
-  const cartData = JSON.parse(sessionStorage.getItem("cart")) || [];
-  const cartMap = new Map();
-  let total = 0;
-
-  // Grupuj dane
-  cartData.forEach(item => {
-    if (cartMap.has(item.name)) {
-      const existing = cartMap.get(item.name);
-      existing.quantity += 1;
-      existing.total += item.price;
+    if (paymentMethod === "PayPal") {
+      // Przenieś użytkownika na PayPal
+      window.location.href = "https://www.paypal.com/signin";
     } else {
-      cartMap.set(item.name, {
-        name: item.name,
-        quantity: 1,
-        total: item.price
-      });
+      // Zapisz zamówienie do historii
+      const orderHistory = JSON.parse(sessionStorage.getItem('orderHistory')) || [];
+      orderHistory.push(order);
+      sessionStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+
+      // Wyczyść koszyk (opcjonalnie)
+      sessionStorage.removeItem('cart');
+
+      // Przejdź do historii zamówień
+      window.location.href = "orderHistory.html";
     }
   });
-
-  const tableBody = document.querySelector("#cartTable tbody");
-
-  cartMap.forEach(item => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${item.name}</td>
-      <td>${item.quantity}</td>
-      <td>${item.total.toFixed(2)} zł</td>
-    `;
-    tableBody.appendChild(row);
-    total += item.total;
-  });
-
-  document.getElementById("cartTotal").textContent = "Total: " + total.toFixed(2) + " zł";
 </script>
 
 </body>
