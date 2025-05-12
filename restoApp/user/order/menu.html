@@ -122,14 +122,14 @@
   </div>
 </div>
 
-<!-- Header -->
-<div class="header-container">
-  <div class="header-text">Menu for Table #<span id="selectedTableNumber"></span></div>
-</div>
-
-<!-- Cart Summary -->
-<div class="cart-summary">
-  Items: <span id="cart-count">0</span> | Total: <span id="cart-sum">0.00</span> zł
+<!-- Info Card -->
+<div class="container mt-4">
+  <div class="card p-4" style="background-color: #f9a825; color: black; border-radius: 15px;">
+    <h4 class="mb-3">🍽️ Menu for Table #<span id="selectedTableNumber"></span></h4>
+    <p class="mb-3"> Restaurant: <span id="restaurantInfo"></span></p>
+    <p class="mb-2">🛒 Items in Cart: <span id="cart-count">0</span> | Total: <span id="cart-sum">0.00</span> zł</p>
+    <a href="cart.html" class="btn btn-primary font-weight-bold">Go to Cart</a>
+  </div>
 </div>
 
 <!-- Menu Sections -->
@@ -293,8 +293,6 @@
 
 </div>
 
-<!-- Cart View -->
-<a href="cart.html" class="btn-cart-view">Go to Cart</a>
 
 <script>
   const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
@@ -318,6 +316,10 @@
   // Pokaz numer stolika z sessionStorage
   const tableNum = sessionStorage.getItem('selectedTableId');
   document.getElementById('selectedTableNumber').textContent = tableNum || '?';
+
+  const restaurantName = sessionStorage.getItem("selectedRestaurantName");
+  document.getElementById("restaurantInfo").textContent = (restaurantName || "Not selected");
+
 
   // Inicjalne uaktualnienie UI
   updateCartUI();
