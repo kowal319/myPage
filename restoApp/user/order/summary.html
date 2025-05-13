@@ -145,35 +145,38 @@
 <script>
   document.getElementById('placeOrderBtn').addEventListener('click', () => {
     const paymentMethod = sessionStorage.getItem('selectedPaymentMethod');
-    const cart = sessionStorage.getItem('cart');
-    const restaurant = sessionStorage.getItem('selectedRestaurantName');
-    const table = sessionStorage.getItem('selectedTableId');
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    const restaurant = sessionStorage.getItem('selectedRestaurantName') || "Unknown";
+    const table = sessionStorage.getItem('selectedTableId') || "Unknown";
+
+    const paid = paymentMethod === "PayPal" ? "Yes" : "No";
+
+    // Wygeneruj unikalne ID na podstawie timestampu
+    const orderId = '#ID' + Date.now().toString().slice(-5);
 
     const order = {
-      restaurant: restaurant || "Unknown",
-      table: table || "Unknown",
-      paymentMethod: paymentMethod || "Unknown",
-      items: JSON.parse(cart) || [],
-      timestamp: new Date().toISOString()
+      id: orderId,
+      date: new Date().toISOString().split('T')[0],
+      restaurant,
+      table,
+      paymentMethod,
+      paid
     };
 
+    // Zapisz zamówienie
+    const existing = JSON.parse(sessionStorage.getItem('orderHistory')) || [];
+    existing.push(order);
+    sessionStorage.setItem('orderHistory', JSON.stringify(existing));
+
+    // Wyczyść koszyk
+    sessionStorage.removeItem('cart');
+
     if (paymentMethod === "PayPal") {
-      // Przenieś użytkownika na PayPal
       window.location.href = "https://www.paypal.com/signin";
     } else {
-      // Zapisz zamówienie do historii
-      const orderHistory = JSON.parse(sessionStorage.getItem('orderHistory')) || [];
-      orderHistory.push(order);
-      sessionStorage.setItem('orderHistory', JSON.stringify(orderHistory));
-
-      // Wyczyść koszyk (opcjonalnie)
-      sessionStorage.removeItem('cart');
-
-      // Przejdź do historii zamówień
       window.location.href = "orderHistory.html";
     }
   });
 </script>
-
 </body>
 </html>
