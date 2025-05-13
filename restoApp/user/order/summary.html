@@ -103,14 +103,14 @@
 </head>
 <body>
 
-<!-- Navbar -->
+<!-- Header / Navbar -->
 <div class="navbar-custom">
   <div class="brand">RestoApp</div>
   <div class="nav-links">
-    <a href="userDetails.html">My Profile</a>
-    <a href="orderHistory.html">My Orders</a>
-    <a href="menu.html">Continue Order</a>
-    <a href="../userChoose.html">Logout</a>
+    <a href="../userDetails.html">My Profile</a>
+    <a href="myOrders.html">My Orders</a>
+    <a href="chooseRestaurant.html">Start order</a>
+    <a href="../../userChoose.html">Logout</a>
   </div>
 </div>
 
@@ -139,43 +139,78 @@
   <div class="summary-total" id="cartTotal">Total: 0 zł</div>
 
   <a href="paymentMethod.html" class="back-btn">← Back to Payment Method</a>
-  <a href="#" class="confirm-btn">Place Order</a>
-</div>
+  <a href="#" class="confirm-btn" id="placeOrderBtn">Place Order</a></div>
 
 <script>
-  document.getElementById('placeOrderBtn').addEventListener('click', () => {
-    const paymentMethod = sessionStorage.getItem('selectedPaymentMethod');
-    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-    const restaurant = sessionStorage.getItem('selectedRestaurantName') || "Unknown";
-    const table = sessionStorage.getItem('selectedTableId') || "Unknown";
+  window.addEventListener('DOMContentLoaded', () => {
+    const restaurantName = sessionStorage.getItem("selectedRestaurantName");
+    const tableId = sessionStorage.getItem("selectedTableId");
+    const paymentMethod = sessionStorage.getItem("selectedPaymentMethod") || "Not selected";
 
-    const paid = paymentMethod === "PayPal" ? "Yes" : "No";
+    document.getElementById("restaurantInfo").textContent = "Restaurant: " + (restaurantName || "Not selected");
+    document.getElementById("tableInfo").textContent = "Table: " + (tableId || "Not selected");
+    document.getElementById("paymentMethodDisplay").textContent = paymentMethod;
 
-    // Wygeneruj unikalne ID na podstawie timestampu
-    const orderId = '#ID' + Date.now().toString().slice(-5);
+    const cartData = JSON.parse(sessionStorage.getItem("cart")) || [];
+    const cartMap = new Map();
+    let total = 0;
 
-    const order = {
-      id: orderId,
-      date: new Date().toISOString().split('T')[0],
-      restaurant,
-      table,
-      paymentMethod,
-      paid
-    };
+    cartData.forEach(item => {
+      if (cartMap.has(item.name)) {
+        const existing = cartMap.get(item.name);
+        existing.quantity += 1;
+        existing.total += item.price;
+      } else {
+        cartMap.set(item.name, {
+          name: item.name,
+          quantity: 1,
+          total: item.price
+        });
+      }
+    });
 
-    // Zapisz zamówienie
-    const existing = JSON.parse(sessionStorage.getItem('orderHistory')) || [];
-    existing.push(order);
-    sessionStorage.setItem('orderHistory', JSON.stringify(existing));
+    const tableBody = document.querySelector("#cartTable tbody");
 
-    // Wyczyść koszyk
-    sessionStorage.removeItem('cart');
+    cartMap.forEach(item => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.quantity}</td>
+        <td>${item.total.toFixed(2)} zł</td>
+      `;
+      tableBody.appendChild(row);
+      total += item.total;
+    });
 
-    if (paymentMethod === "PayPal") {
-      window.location.href = "https://www.paypal.com/signin";
-    } else {
-      window.location.href = "orderHistory.html";
-    }
+    document.getElementById("cartTotal").textContent = "Total: " + total.toFixed(2) + " zł";
+
+    // Obsługa przycisku "Place Order"
+    document.getElementById('placeOrderBtn').addEventListener('click', () => {
+      const paid = paymentMethod === "PayPal" ? "Yes" : "No";
+      const orderId = '#ID' + Date.now().toString().slice(-5);
+
+      const order = {
+        id: orderId,
+        date: new Date().toISOString().split('T')[0],
+        restaurant: restaurantName,
+        table: tableId,
+        paymentMethod,
+        paid,
+        items: cartData
+      };
+
+      const existing = JSON.parse(sessionStorage.getItem('orderHistory')) || [];
+      existing.push(order);
+      sessionStorage.setItem('orderHistory', JSON.stringify(existing));
+
+      sessionStorage.removeItem('cart');
+
+      if (paymentMethod === "PayPal") {
+        window.location.href = "https://www.paypal.com/signin";
+      } else {
+        window.location.href = "myOrders.html";
+      }
+    });
   });
 </script>
 </body>

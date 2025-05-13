@@ -73,13 +73,13 @@
 
 <body>
 
-<!-- Navbar -->
+<!-- Header / Navbar -->
 <div class="navbar-custom">
   <div class="brand">RestoApp</div>
   <div class="nav-links">
     <a href="../userDetails.html">My Profile</a>
     <a href="myOrders.html">My Orders</a>
-    <a href="menu.html">Start Order</a>
+    <a href="chooseRestaurant.html">Start order</a>
     <a href="../../userChoose.html">Logout</a>
   </div>
 </div>
@@ -100,28 +100,28 @@
     </thead>
     <tbody id="order-table-body">
     <tr>
-      <td>#1001</td>
-      <td>2024-11-12</td>
-      <td>Pizza Planet</td>
-      <td>5</td>
-      <td>💳 Credit Card</td>
-      <td class="paid-yes">Yes</td>
-    </tr>
     <tr>
-      <td>#1002</td>
+      <td>#ID1003</td>
+      <td>2025-01-20</td>
+      <td>Sushi Corner</td>
+      <td>1</td>
+      <td>🅿️ PayPal</td>
+      <td class="paid-yes">Yes</td>
+    <tr>
+      <td>#ID1002</td>
       <td>2024-12-01</td>
       <td>Burger House</td>
       <td>3</td>
       <td>💵 Cash</td>
       <td class="paid-no">No</td>
     </tr>
-    <tr>
-      <td>#1003</td>
-      <td>2025-01-20</td>
-      <td>Sushi Corner</td>
-      <td>1</td>
-      <td>🅿️ PayPal</td>
-      <td class="paid-yes">Yes</td>
+    </tr>
+    <td>#ID1001</td>
+    <td>2024-11-12</td>
+    <td>Pizza Planet</td>
+    <td>5</td>
+    <td>💳 Credit Card</td>
+    <td class="paid-yes">Yes</td>
     </tr>
     </tbody>
   </table>
@@ -138,7 +138,7 @@
       "PayPal": "🅿️"
     };
 
-    orders.forEach(order => {
+    orders.reverse().forEach(order => {
       const row = document.createElement('tr');
       const paidClass = order.paid === "Yes" ? 'paid-yes' : 'paid-no';
       const icon = paymentIcons[order.paymentMethod] || '';
@@ -151,8 +151,7 @@
         <td>${icon} ${order.paymentMethod}</td>
         <td class="${paidClass}">${order.paid}</td>
       `;
-      tableBody.appendChild(row);
-    });
+tableBody.insertBefore(row, tableBody.firstChild);    });
   });
 </script>
 
