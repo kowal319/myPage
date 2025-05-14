@@ -96,19 +96,20 @@
       <th>Table</th>
       <th>Payment Method</th>
       <th>Paid?</th>
+      <th>Details</th>
     </tr>
     </thead>
     <tbody id="order-table-body">
     <tr>
     <tr>
-      <td>#ID1003</td>
+      <td>#ID13003</td>
       <td>2025-01-20</td>
       <td>Sushi Corner</td>
       <td>1</td>
       <td>🅿️ PayPal</td>
       <td class="paid-yes">Yes</td>
     <tr>
-      <td>#ID1002</td>
+      <td>#ID16002</td>
       <td>2024-12-01</td>
       <td>Burger House</td>
       <td>3</td>
@@ -116,7 +117,7 @@
       <td class="paid-no">No</td>
     </tr>
     </tr>
-    <td>#ID1001</td>
+    <td>#ID17001</td>
     <td>2024-11-12</td>
     <td>Pizza Planet</td>
     <td>5</td>
@@ -135,10 +136,10 @@
     const paymentIcons = {
       "Card with waitress": "💳",
       "Cash with waitress": "💵",
-      "PayPal": "🅿️"
+
     };
 
-    orders.reverse().forEach(order => {
+    orders.forEach(order => {
       const row = document.createElement('tr');
       const paidClass = order.paid === "Yes" ? 'paid-yes' : 'paid-no';
       const icon = paymentIcons[order.paymentMethod] || '';
@@ -150,9 +151,22 @@
         <td>${order.table}</td>
         <td>${icon} ${order.paymentMethod}</td>
         <td class="${paidClass}">${order.paid}</td>
+        <td><button class="btn btn-sm btn-primary view-details" data-id="${order.id}">View Details</button></td>
+
       `;
 tableBody.insertBefore(row, tableBody.firstChild);    });
   });
+
+  document.querySelectorAll('.view-details').forEach(button => {
+  button.addEventListener('click', (e) => {
+    const orderId = e.target.dataset.id;
+    const orders = JSON.parse(sessionStorage.getItem('orderHistory')) || [];
+    const selectedOrder = orders.find(order => order.id === orderId);
+    sessionStorage.setItem('selectedOrder', JSON.stringify(selectedOrder));
+    window.location.href = 'orderDetails.html';
+  });
+});
+
 </script>
 
 </body>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Card Payment</title>
+  <style>
+    body {
+      background-color: #f4f4f4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .payment-container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .payment-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 15px;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 5px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+
+    .buttons button {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      margin: 0 5px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .success {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .success:hover {
+      background-color: #218838;
+    }
+
+    .cancel {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .cancel:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+<div class="payment-container">
+  <h2>Pay with Card</h2>
+  <form>
+    <label>Name on Card
+      <input type="text" placeholder="John Doe" required>
+    </label>
+
+    <label>Card Number
+      <input type="text" placeholder="1234 5678 9012 3456" required>
+    </label>
+
+    <label>Expiry Date
+      <input type="text" placeholder="MM/YY" required>
+    </label>
+
+    <label>CVV
+      <input type="text" placeholder="123" required>
+    </label>
+
+    <div class="buttons">
+      <button type="button" class="success" onclick="handlePayment(true)">✅ Confirm Payment</button>
+      <button type="button" class="cancel" onclick="handlePayment(false)">❌ Cancel</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function handlePayment(success) {
+    const orderId = localStorage.getItem('currentOrderId'); // poprawione źródło ID
+    const orders = JSON.parse(sessionStorage.getItem('orderHistory')) || []; // poprawiona tablica
+
+    if (success) {
+      const updated = orders.map(order =>
+        order.id === orderId ? { ...order, paid: "Yes" } : order
+      );
+      sessionStorage.setItem('orderHistory', JSON.stringify(updated));
+      window.location.href = 'myOrders.html';
+    } else {
+      window.location.href = 'paymentMethod.html'; // brak rozszerzenia wcześniej
+    }
+  }
+</script>
+</body>
+</html>

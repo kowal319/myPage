@@ -136,24 +136,38 @@
     </tbody>
   </table>
 
+
   <div class="summary-total" id="cartTotal">Total: 0 zł</div>
 
   <a href="paymentMethod.html" class="back-btn">← Back to Payment Method</a>
-  <a href="#" class="confirm-btn" id="placeOrderBtn">Place Order</a></div>
-
+  <a href="#" class="confirm-btn" id="placeOrderBtn">Place Order</a>
+  <div id="paypal-button-container" style="margin-top: 20px;"></div>
+</div>
+  <script src="https://www.paypal.com/sdk/js?client-id=Aerj_6T3jtKv-KkWtdEdICG3G4I_xVIffFgKL8ch95mMbyyA-CHbJ3YY_AIC_Yz6TDQYK2ub36SMOU74&currency=PLN"></script>
 <script>
+  let orderTotal = 0;
+  let cartData = [];
+
   window.addEventListener('DOMContentLoaded', () => {
     const restaurantName = sessionStorage.getItem("selectedRestaurantName");
     const tableId = sessionStorage.getItem("selectedTableId");
     const paymentMethod = sessionStorage.getItem("selectedPaymentMethod") || "Not selected";
 
+    // Wyświetlanie info
     document.getElementById("restaurantInfo").textContent = "Restaurant: " + (restaurantName || "Not selected");
     document.getElementById("tableInfo").textContent = "Table: " + (tableId || "Not selected");
     document.getElementById("paymentMethodDisplay").textContent = paymentMethod;
 
-    const cartData = JSON.parse(sessionStorage.getItem("cart")) || [];
+    // Zmiana nazwy przycisku
+    const placeOrderBtn = document.getElementById('placeOrderBtn');
+    const paypalContainer = document.getElementById('paypal-button-container');
+    if (paymentMethod === "PayPal") {
+      placeOrderBtn.textContent = "Pay with PayPal";
+    }
+
+    // Wczytanie danych z koszyka
+    cartData = JSON.parse(sessionStorage.getItem("cart")) || [];
     const cartMap = new Map();
-    let total = 0;
 
     cartData.forEach(item => {
       if (cartMap.has(item.name)) {
@@ -179,39 +193,82 @@
         <td>${item.total.toFixed(2)} zł</td>
       `;
       tableBody.appendChild(row);
-      total += item.total;
+      orderTotal += item.total;
     });
 
-    document.getElementById("cartTotal").textContent = "Total: " + total.toFixed(2) + " zł";
+    document.getElementById("cartTotal").textContent = "Total: " + orderTotal.toFixed(2) + " zł";
 
-    // Obsługa przycisku "Place Order"
-    document.getElementById('placeOrderBtn').addEventListener('click', () => {
-      const paid = paymentMethod === "PayPal" ? "Yes" : "No";
-      const orderId = '#ID' + Date.now().toString().slice(-5);
+    // Obsługa kliknięcia
+placeOrderBtn.addEventListener('click', () => {
+  if (paymentMethod === "PayPal") {
+    if (!paypalRendered) {
+      paypalRendered = true;
+      placeOrderBtn.style.display = 'none';
 
-      const order = {
-        id: orderId,
-        date: new Date().toISOString().split('T')[0],
-        restaurant: restaurantName,
-        table: tableId,
-        paymentMethod,
-        paid,
-        items: cartData
-      };
+      paypal.Buttons({
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: orderTotal.toFixed(2),
+                currency_code: "PLN"
+              }
+            }]
+          });
+        },
+        onApprove: (data, actions) => {
+          return actions.order.capture().then(details => {
+            alert('Transaction completed by ' + details.payer.name.given_name);
+            saveOrder("Yes");
+            window.location.href = "myOrders.html";
+          });
+        },
+        onError: (err) => {
+          console.error("PayPal Error:", err);
+          alert("Payment failed. Try again.");
+          placeOrderBtn.style.display = 'inline-block';
+          paypalRendered = false;
+        }
+      }).render('#paypal-button-container');
+    }
+  } else if (paymentMethod === "Card Online") {
+    // 💳 PRZEKIERUJ NA FAKE CARD PAYMENT
+    saveOrder("No", true); // Zapisz zamówienie jako nieopłacone – zostanie opłacone po success
+    const lastOrder = JSON.parse(sessionStorage.getItem('orderHistory')).slice(-1)[0];
+    localStorage.setItem('currentOrderId', lastOrder.id); // Przekazanie ID do strony płatności
+    window.location.href = "fakeCardPayment.html";
+  } else {
+    // inne metody (np. gotówka)
+    saveOrder("No");
+    window.location.href = "myOrders.html";
+  }
+});
 
-      const existing = JSON.parse(sessionStorage.getItem('orderHistory')) || [];
-      existing.push(order);
-      sessionStorage.setItem('orderHistory', JSON.stringify(existing));
+    // Zapis zamówienia
+  function saveOrder(paidStatus, keepCart = false) {
+  const orderId = '#ID' + Date.now().toString().slice(-5);
+  const order = {
+    id: orderId,
+    date: new Date().toISOString().split('T')[0],
+    restaurant: restaurantName,
+    table: tableId,
+    paymentMethod,
+    paid: paidStatus,
+    items: cartData
+  };
 
-      sessionStorage.removeItem('cart');
+  const existing = JSON.parse(sessionStorage.getItem('orderHistory')) || [];
+  existing.push(order);
+  sessionStorage.setItem('orderHistory', JSON.stringify(existing));
+  sessionStorage.setItem('currentOrderId', order.id);
 
-      if (paymentMethod === "PayPal") {
-        window.location.href = "https://www.paypal.com/signin";
-      } else {
-        window.location.href = "myOrders.html";
-      }
-    });
+  if (!keepCart) {
+    sessionStorage.removeItem('cart');
+  }
+}
   });
 </script>
+
 </body>
+
 </html>
