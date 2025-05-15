@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Details - Sushi Corner</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <style>
+    body {
+      background-image: url('/img/tlo.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar-custom {
+      background-color: #f9a825;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar-custom .nav-links a {
+      margin-left: 20px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .brand {
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+    }
+    .main-content {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .info {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+    .summary-total {
+      text-align: right;
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .back-btn {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 30px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar-custom">
+  <div class="brand">RestoApp</div>
+  <div class="nav-links">
+    <a href="../userDetails.html">My Profile</a>
+    <a href="myOrders.html">My Orders</a>
+    <a href="chooseRestaurant.html">Start order</a>
+    <a href="../../userChoose.html">Logout</a>
+  </div>
+</div>
+
+<div class="main-content">
+  <h2>Order Details</h2>
+
+  <div class="info">Order ID: ID13003</div>
+  <div class="info">Restaurant: Sushi Corner</div>
+  <div class="info">Table: 1</div>
+  <div class="info">Date: 2025-01-20</div>
+  <div class="info">Payment Method: 🅿️ PayPal</div>
+  <div class="info">Paid: Yes</div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr><td>Salmon Nigiri</td><td>2</td><td>38.00 zł</td></tr>
+    <tr><td>California Maki</td><td>1</td><td>22.00 zł</td></tr>
+    <tr><td>Zupa Miso</td><td>1</td><td>12.00 zł</td></tr>
+    </tbody>
+  </table>
+
+  <div class="summary-total">Total: 72.00 zł</div>
+
+  <a href="myOrders.html" class="back-btn">← Back to My Orders</a>
+</div>
+
+</body>
+</html>

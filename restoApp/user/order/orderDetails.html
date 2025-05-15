@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Details</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <style>
+    body {
+      background-image: url('/img/tlo.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar-custom {
+      background-color: #f9a825;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-custom .nav-links a {
+      margin-left: 20px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .brand {
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .main-content {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .info {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    .summary-total {
+      text-align: right;
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .back-btn {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 30px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header / Navbar -->
+<div class="navbar-custom">
+  <div class="brand">RestoApp</div>
+  <div class="nav-links">
+    <a href="../userDetails.html">My Profile</a>
+    <a href="myOrders.html">My Orders</a>
+    <a href="chooseRestaurant.html">Start order</a>
+    <a href="../../userChoose.html">Logout</a>
+  </div>
+</div>
+
+<!-- Order Details -->
+<div class="main-content">
+  <h2>Order Details</h2>
+
+  <div class="info" id="orderIdInfo">Order ID:</div>
+  <div class="info" id="restaurantInfo">Restaurant: </div>
+  <div class="info" id="tableInfo">Table: </div>
+  <div class="info" id="dateInfo">Date: </div>
+  <div class="info" id="paymentMethodInfo">Payment Method: </div>
+  <div class="info" id="paidStatus">Paid: </div>
+
+  <table id="orderItemsTable">
+    <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Items will be inserted here -->
+    </tbody>
+  </table>
+
+  <div class="summary-total" id="cartTotal">Total: 0 zł</div>
+
+  <a href="myOrders.html" class="back-btn">← Back to My Orders</a>
+</div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const order = JSON.parse(sessionStorage.getItem('selectedOrder'));
+    if (!order) {
+      alert("Order not found!");
+      window.location.href = "myOrders.html";
+      return;
+    }
+
+    document.getElementById("orderIdInfo").textContent = "Order ID: " + order.id;
+    document.getElementById("restaurantInfo").textContent = "Restaurant: " + order.restaurant;
+    document.getElementById("tableInfo").textContent = "Table: " + order.table;
+    document.getElementById("dateInfo").textContent = "Date: " + order.date;
+    document.getElementById("paymentMethodInfo").textContent = "Payment Method: " + order.paymentMethod;
+    document.getElementById("paidStatus").textContent = "Paid: " + order.paid;
+
+    const cartMap = new Map();
+    let orderTotal = 0;
+
+    order.items.forEach(item => {
+      if (cartMap.has(item.name)) {
+        const existing = cartMap.get(item.name);
+        existing.quantity += 1;
+        existing.total += item.price;
+      } else {
+        cartMap.set(item.name, {
+          name: item.name,
+          quantity: 1,
+          total: item.price
+        });
+      }
+    });
+
+    const tableBody = document.querySelector("#orderItemsTable tbody");
+
+    cartMap.forEach(item => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.quantity}</td>
+        <td>${item.total.toFixed(2)} zł</td>
+      `;
+      tableBody.appendChild(row);
+      orderTotal += item.total;
+    });
+
+    document.getElementById("cartTotal").textContent = "Total: " + orderTotal.toFixed(2) + " zł";
+  });
+</script>
+
+</body>
+</html>

@@ -99,30 +99,29 @@
       <th>Details</th>
     </tr>
     </thead>
+
     <tbody id="order-table-body">
-    <tr>
     <tr>
       <td>#ID13003</td>
       <td>2025-01-20</td>
       <td>Sushi Corner</td>
       <td>1</td>
-      <td>🅿️ PayPal</td>
+      <td>💵 Card with Waitress</td>
       <td class="paid-yes">Yes</td>
+      <td>
+        <a href="orderDetails1.html" class="btn btn-sm btn-primary">View</a>
+      </td>
+    </tr>
     <tr>
       <td>#ID16002</td>
       <td>2024-12-01</td>
       <td>Burger House</td>
       <td>3</td>
-      <td>💵 Cash</td>
-      <td class="paid-no">No</td>
-    </tr>
-    </tr>
-    <td>#ID17001</td>
-    <td>2024-11-12</td>
-    <td>Pizza Planet</td>
-    <td>5</td>
-    <td>💳 Credit Card</td>
-    <td class="paid-yes">Yes</td>
+      <td> Card Online</td>
+      <td class="paid-no">Yes</td>
+      <td>
+        <a href="orderDetails2.html" class="btn btn-sm btn-primary">View</a>
+      </td>
     </tr>
     </tbody>
   </table>
@@ -136,7 +135,8 @@
     const paymentIcons = {
       "Card with waitress": "💳",
       "Cash with waitress": "💵",
-
+      "PayPal": "🅿️",
+      "Credit Card": "💳"
     };
 
     orders.forEach(order => {
@@ -152,21 +152,27 @@
         <td>${icon} ${order.paymentMethod}</td>
         <td class="${paidClass}">${order.paid}</td>
         <td><button class="btn btn-sm btn-primary view-details" data-id="${order.id}">View Details</button></td>
-
       `;
-tableBody.insertBefore(row, tableBody.firstChild);    });
-  });
 
-  document.querySelectorAll('.view-details').forEach(button => {
-  button.addEventListener('click', (e) => {
-    const orderId = e.target.dataset.id;
-    const orders = JSON.parse(sessionStorage.getItem('orderHistory')) || [];
-    const selectedOrder = orders.find(order => order.id === orderId);
-    sessionStorage.setItem('selectedOrder', JSON.stringify(selectedOrder));
-    window.location.href = 'orderDetails.html';
-  });
-});
+      // Dodaj wiersz na początek
+      tableBody.insertBefore(row, tableBody.firstChild);
 
+      // Dodaj nasłuchiwanie kliknięcia do przycisku
+      const btn = row.querySelector('.view-details');
+      btn.addEventListener('click', (e) => {
+        const orderId = e.target.dataset.id;
+        const selectedOrder = orders.find(order => order.id === orderId);
+        if (selectedOrder) {
+          sessionStorage.setItem('selectedOrder', JSON.stringify(selectedOrder));
+         if (orderId === "ID13003") {
+  window.location.href = 'orderDetails1.html';
+} else if (orderId === "ID16002") {
+  window.location.href = 'orderDetails2.html';
+}
+        }
+      });
+    });
+  });
 </script>
 
 </body>
