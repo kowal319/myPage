@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Details - Burger House</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <style>
+    body {
+      background-image: url('/img/tlo.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar-custom {
+      background-color: #f9a825;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar-custom .nav-links a {
+      margin-left: 20px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .brand {
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+    }
+    .main-content {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .info {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+    .summary-total {
+      text-align: right;
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .back-btn {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 30px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar-custom">
+  <div class="brand">RestoApp</div>
+  <div class="nav-links">
+    <a href="../userDetails.html">My Profile</a>
+    <a href="myOrders.html">My Orders</a>
+    <a href="chooseRestaurant.html">Start order</a>
+    <a href="../../userChoose.html">Logout</a>
+  </div>
+</div>
+
+<div class="main-content">
+  <h2>Order Details</h2>
+
+  <div class="info">Order ID: ID16002</div>
+  <div class="info">Restaurant: Burger House</div>
+  <div class="info">Table: 3</div>
+  <div class="info">Date: 2024-12-01</div>
+  <div class="info">Payment Method: 💳 Card Online<</div>
+  <div class="info">
+    Paid: <span id="paid-status">NO</span>
+    <button id="toggle-paid-btn" class="btn btn-sm btn-outline-success ml-2">Toggle</button>
+    <button id="save-paid-btn" class="btn btn-sm btn-primary ml-2">Save</button>
+  </div>
+  <table>
+    <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr><td>Cheeseburger</td><td>1</td><td>26.00 zł</td></tr>
+    <tr><td>Frytki</td><td>1</td><td>10.00 zł</td></tr>
+    <tr><td>Cola 0.5L</td><td>1</td><td>6.00 zł</td></tr>
+    </tbody>
+  </table>
+
+  <div class="summary-total">Total: 42.00 zł</div>
+
+  <a href="ordersEmployee.html" class="back-btn">← Back to My Orders</a>
+</div>
+
+<script>
+  const orderId = "ID16002"; // unikalny identyfikator zamówienia
+  const paidSpan = document.getElementById("paid-status");
+  const toggleBtn = document.getElementById("toggle-paid-btn");
+  const saveBtn = document.getElementById("save-paid-btn");
+
+  // Załaduj status z sessionStorage
+  const paidMap = JSON.parse(sessionStorage.getItem("paidStatusMap")) || {};
+  const currentStatus = paidMap[orderId] || "NO";
+  paidSpan.textContent = currentStatus;
+
+  // Zmieniaj status przy kliknięciu "Toggle"
+  toggleBtn.addEventListener("click", () => {
+    const newStatus = paidSpan.textContent === "YES" ? "NO" : "YES";
+    paidSpan.textContent = newStatus;
+  });
+
+  // Zapisz do sessionStorage po kliknięciu "Save"
+  saveBtn.addEventListener("click", () => {
+    const updatedStatus = paidSpan.textContent;
+    paidMap[orderId] = updatedStatus;
+    sessionStorage.setItem("paidStatusMap", JSON.stringify(paidMap));
+    alert("Status saved ✅");
+  });
+</script>
+</body>
+</html>

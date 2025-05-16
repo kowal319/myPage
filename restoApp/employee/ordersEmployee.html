@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order History</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('/myPage/restoApp/tlo.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar-custom {
+      background-color: #f9a825;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-custom .nav-links a {
+      margin-left: 20px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .brand {
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      max-width: 1000px;
+      margin: 60px auto;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 25px;
+    }
+
+    h5 {
+      color: #333;
+      margin-bottom: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .table th, .table td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .paid-yes {
+      color: green;
+      font-weight: bold;
+    }
+
+    .paid-no {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Header / Navbar -->
+<div class="navbar-custom">
+  <div class="brand">RestoApp</div>
+  <div class="nav-links">
+    <a href="../userDetails.html">My Profile</a>
+    <a href="myOrders.html">My Orders</a>
+    <a href="chooseRestaurant.html">Start order</a>
+    <a href="../../userChoose.html">Logout</a>
+  </div>
+</div>
+
+<!-- Order History -->
+<div class="card-container">
+  <h5>🧾 Order History</h5>
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th>Order ID</th>
+      <th>Date</th>
+      <th>Restaurant</th>
+      <th>Table</th>
+      <th>Payment Method</th>
+      <th>Paid?</th>
+      <th>Details</th>
+    </tr>
+    </thead>
+
+    <tbody id="order-table-body">
+    <tr>
+      <td>#ID13003</td>
+      <td>2025-01-20</td>
+      <td>Sushi Corner</td>
+      <td>1</td>
+      <td>💵 Cash with Waitress</td>
+      <td class="paid-yes">NO</td>
+      <td>
+        <a href="order1Example.html" class="btn btn-sm btn-primary">View Details</a>
+      </td>
+    </tr>
+    <tr>
+      <td>#ID16002</td>
+      <td>2024-12-01</td>
+      <td>Burger House</td>
+      <td>3</td>
+      <td>💳 Card Online</td>
+      <td class="paid-no">Yes</td>
+      <td>
+        <a href="order2Example.html" class="btn btn-sm btn-primary">View Details</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const paidMap = JSON.parse(sessionStorage.getItem("paidStatusMap")) || {};
+
+    Object.entries(paidMap).forEach(([id, status]) => {
+      const rows = document.querySelectorAll("#order-table-body tr");
+
+      rows.forEach(row => {
+        const orderIdCell = row.querySelector("td");
+        if (orderIdCell && orderIdCell.textContent.trim() === `#${id}`) {
+          const paidCell = row.querySelector("td:nth-child(6)");
+          if (paidCell) {
+            paidCell.textContent = status;
+            paidCell.className = status === "YES" ? "paid-yes" : "paid-no";
+          }
+        }
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>
