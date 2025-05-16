@@ -106,10 +106,10 @@
       <td>2025-01-20</td>
       <td>Sushi Corner</td>
       <td>1</td>
-      <td>💵 Card with Waitress</td>
-      <td class="paid-yes">Yes</td>
+      <td>💵 Cash with Waitress</td>
+      <td class="paid-yes">NO</td>
       <td>
-        <a href="orderDetails1.html" class="btn btn-sm btn-primary">View</a>
+        <a href="orderDetails1.html" class="btn btn-sm btn-primary">View Details</a>
       </td>
     </tr>
     <tr>
@@ -117,10 +117,10 @@
       <td>2024-12-01</td>
       <td>Burger House</td>
       <td>3</td>
-      <td> Card Online</td>
+      <td>💳 Card Online</td>
       <td class="paid-no">Yes</td>
       <td>
-        <a href="orderDetails2.html" class="btn btn-sm btn-primary">View</a>
+        <a href="orderDetails2.html" class="btn btn-sm btn-primary">View Details</a>
       </td>
     </tr>
     </tbody>
@@ -164,11 +164,7 @@
         const selectedOrder = orders.find(order => order.id === orderId);
         if (selectedOrder) {
           sessionStorage.setItem('selectedOrder', JSON.stringify(selectedOrder));
-         if (orderId === "ID13003") {
-  window.location.href = 'orderDetails1.html';
-} else if (orderId === "ID16002") {
-  window.location.href = 'orderDetails2.html';
-}
+          window.location.href = 'orderDetails.html';
         }
       });
     });
