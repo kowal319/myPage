@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create New User</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <style>
+    body {
+      margin: 0;
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    .form-container {
+      max-width: 500px;
+      margin: 60px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    h3 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <h3>Create New User</h3>
+  <form id="userForm">
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" class="form-control" id="firstname">
+    </div>
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text" class="form-control" id="lastname">
+    </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="text" class="form-control" id="phone">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" class="form-control" id="username">
+    </div>
+    <button type="submit" class="btn btn-success btn-block">Save</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById("userForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const users = JSON.parse(sessionStorage.getItem("users")) || [];
+    const newUser = {
+      identification: "USR" + String(Date.now()).slice(-5),
+      FirstName: document.getElementById("firstname").value,
+      LastName: document.getElementById("lastname").value,
+      phone: document.getElementById("phone").value,
+      username: document.getElementById("username").value
+    };
+
+    users.unshift(newUser);
+    sessionStorage.setItem("users", JSON.stringify(users));
+    window.location.href = "adminUsers.html";
+  });
+</script>
+</body>
+</html>
