@@ -1,62 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>User Profile</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
+  <meta charset="UTF-8" />
+  <title>Edit New Employee</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
   <style>
     body {
-        margin: 0;
-        padding: 0;
-        background-image: url('/myPage/restoApp/tlo.jpg');
-        background-size: cover;
-        background-position: center;
-        font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('/myPage/restoApp/tlo.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
     }
 
     .navbar-custom {
-        background-color: #f9a825;
-        padding: 10px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      background-color: #f9a825;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .navbar-custom .nav-links a {
-        margin-left: 20px;
-        color: white;
-        font-weight: bold;
-        text-decoration: none;
+      margin-left: 20px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
     }
 
     .brand {
-        font-size: 24px;
-        color: white;
-        font-weight: bold;
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
     }
 
     .card-container {
-        display: flex;
-        width: 50%;
-        margin: 60px auto;
-        background-color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        padding: 20px;
+      display: flex;
+      width: 50%;
+      margin: 60px auto;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      padding: 20px;
     }
 
     .form-group {
-        margin-bottom: 15px;
+      margin-bottom: 15px;
     }
 
     .btn {
-        margin-top: 10px;
+      margin-top: 10px;
     }
   </style>
 </head>
-
 <body>
 
 <!-- Header / Navbar -->
@@ -69,7 +66,6 @@
     <a href="../restaurants/adminRestaurants.html">Restaurants</a>
     <a href="../menu/adminMenu.html">Menu</a>
     <a href="../../userChoose.html">Logout</a>
-
   </div>
 </div>
 
@@ -109,20 +105,19 @@
     <button type="submit" class="btn btn-primary">Update</button>
     <a href="adminEmployees.html" class="btn btn-secondary">Cancel</a>
   </form>
-
 </div>
 
 <script>
-  // Load data to session storage
   document.addEventListener("DOMContentLoaded", function () {
-const user = JSON.parse(sessionStorage.getItem("demoUserStatic")) || {
-  identification: "EMP001",
-  FirstName: "Anna",
-  LastName: "Kowalska",
-  username: "anna@resto.pl",
-  phone: "123456789",
-  restaurant: "Resto Zamojska"
-};
+    // Pobierz usera dynamicznego z sessionStorage
+    const user = JSON.parse(sessionStorage.getItem("demoUser")) || {
+      identification: "",
+      FirstName: "",
+      LastName: "",
+      username: "",
+      phone: "",
+      restaurant: "Resto Zamojska"
+    };
 
     document.getElementById("identification").value = user.identification;
     document.getElementById("FirstName").value = user.FirstName;
@@ -131,21 +126,36 @@ const user = JSON.parse(sessionStorage.getItem("demoUserStatic")) || {
     document.getElementById("phone").value = user.phone;
     document.getElementById("restaurant").value = user.restaurant;
 
-  });
+    // Po submit zapisujemy i aktualizujemy listę pracowników w sessionStorage
+    document.getElementById("userForm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-  // Save data in sessionStorage
-  document.getElementById("userForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const user = {
-      identification: document.getElementById("identification").value,
-      FirstName: document.getElementById("FirstName").value,
-      LastName: document.getElementById("LastName").value,
-      username: document.getElementById("username").value,
-      phone: document.getElementById("phone").value,
-      restaurant: document.getElementById("restaurant").value
-    };
-sessionStorage.setItem("demoUserStatic", JSON.stringify(user));    alert("Dane zostały zaktualizowane!");
-    window.location.href = "adminEmployees.html"; // <- Zmień na nazwę pliku z widokiem profilu
+      const updatedUser = {
+        identification: document.getElementById("identification").value,
+        FirstName: document.getElementById("FirstName").value,
+        LastName: document.getElementById("LastName").value,
+        username: document.getElementById("username").value,
+        phone: document.getElementById("phone").value,
+        restaurant: document.getElementById("restaurant").value
+      };
+
+      // Pobierz listę pracowników
+      const employees = JSON.parse(sessionStorage.getItem("employeeList")) || [];
+
+      // Sprawdź czy użytkownik już istnieje i zaktualizuj, jeśli nie to dodaj
+      const index = employees.findIndex(emp => emp.identification === updatedUser.identification);
+      if (index !== -1) {
+        employees[index] = updatedUser;
+      } else {
+        employees.push(updatedUser);
+      }
+
+      sessionStorage.setItem("employeeList", JSON.stringify(employees));
+      sessionStorage.setItem("demoUser", JSON.stringify(updatedUser)); // Zaktualizuj demoUser
+
+      alert("Dane pracownika zostały zaktualizowane!");
+      window.location.href = "adminEmployees.html";
+    });
   });
 </script>
 

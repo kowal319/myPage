@@ -81,6 +81,7 @@
     <a href="adminEmployees.html">Employees</a>
     <a href="../restaurants/adminRestaurants.html">Restaurants</a>
     <a href="../menu/adminMenu.html">Menu</a>
+    <a href="../../userChoose.html">Logout</a>
   </div>
 </div>
 
@@ -114,7 +115,7 @@
       <td id="emp-email">anna@resto.pl</td>
       <td id="emp-restaurant">Resto Zamojska</td>
       <td>
-        <a href="editEmployeeAdmin.html" class="btn btn-primary btn-sm">Edit details</a>
+        <button class="btn btn-primary btn-sm" id="edit-static">Edit</button>
         <button class="btn btn-delete btn-sm" id="delete-static">Usuń</button>
       </td>
     </tr>
@@ -132,63 +133,81 @@
 <!-- Skrypt dynamiczny (jak orders) -->
 <script>
   window.addEventListener('DOMContentLoaded', () => {
-    const employees = JSON.parse(sessionStorage.getItem('employeeList')) || [];
-    const tableBody = document.getElementById("employee-table-body");
+  const employees = JSON.parse(sessionStorage.getItem('employeeList')) || [];
+  const tableBody = document.getElementById("employee-table-body");
 
-    employees.forEach(emp => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${emp.identification}</td>
-        <td>${emp.FirstName}</td>
-        <td>${emp.LastName}</td>
-        <td>${emp.phone}</td>
-        <td>${emp.username}</td>
-        <td>${emp.restaurant}</td>
-        <td>
-          <button class="btn btn-edit btn-sm">Edit</button>
-          <button class="btn btn-delete btn-sm">Usuń</button>
-        </td>
-      `;
-      // Dodajemy NA GÓRZE tabeli
-      tableBody.insertBefore(row, tableBody.firstChild);
+  employees.forEach(emp => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${emp.identification}</td>
+      <td>${emp.FirstName}</td>
+      <td>${emp.LastName}</td>
+      <td>${emp.phone}</td>
+      <td>${emp.username}</td>
+      <td>${emp.restaurant}</td>
+      <td>
+        <button class="btn btn-edit btn-sm">Edit</button>
+        <button class="btn btn-delete btn-sm">Usuń</button>
+      </td>
+    `;
+    // Dodajemy NA GÓRZE tabeli
+    tableBody.insertBefore(row, tableBody.firstChild);
 
-      // Obsługa edycji
-      row.querySelector(".btn-edit").addEventListener("click", () => {
-        sessionStorage.setItem("demoUser", JSON.stringify(emp));
-        window.location.href = "editEmployeeAdmin.html";
-      });
+    // Obsługa edycji
+row.querySelector(".btn-edit").addEventListener("click", () => {
+  sessionStorage.setItem("demoUser", JSON.stringify(emp));
+  window.location.href = "editNewEmployeeAdmin.html";  // <-- nowy plik edycji dynamicznego pracownika
+});
 
-      // Obsługa usunięcia
-      row.querySelector(".btn-delete").addEventListener("click", () => {
-        const updated = employees.filter(e => e.identification !== emp.identification);
-        sessionStorage.setItem("employeeList", JSON.stringify(updated));
-        row.remove();
-      });
-    });
-
-    // Obsługa usunięcia dla statycznych
-    document.querySelectorAll(".btn-delete").forEach(btn => {
-      btn.addEventListener("click", function () {
-        const row = this.closest("tr");
-        row.remove();
-      });
-    });
-
-    // Uzupełnij dane EMP001 jeśli istnieją w sessionStorage
-    const user = JSON.parse(sessionStorage.getItem("demoUser"));
-    if (user && user.identification === "EMP001") {
-      document.getElementById("emp-firstname").textContent = user.FirstName;
-      document.getElementById("emp-lastname").textContent = user.LastName;
-      document.getElementById("emp-phone").textContent = user.phone;
-      document.getElementById("emp-email").textContent = user.username;
-      document.getElementById("emp-restaurant").textContent = user.restaurant;
-    }
-
-    // Przycisk Create New - resetuj demoUser
-    document.getElementById("createNewBtn").addEventListener("click", () => {
-      sessionStorage.removeItem("demoUser");
+    // Obsługa usunięcia
+    row.querySelector(".btn-delete").addEventListener("click", () => {
+      const updated = employees.filter(e => e.identification !== emp.identification);
+      sessionStorage.setItem("employeeList", JSON.stringify(updated));
+      row.remove();
     });
   });
+
+  // Obsługa usunięcia dla statycznych
+  document.querySelectorAll(".btn-delete").forEach(btn => {
+    btn.addEventListener("click", function () {
+      const row = this.closest("tr");
+      row.remove();
+    });
+  });
+
+
+// Obsługa edycji statycznego pracownika EMP001
+document.getElementById("edit-static").addEventListener("click", () => {
+  const user = {
+    identification: document.getElementById("emp-id").textContent,
+    FirstName: document.getElementById("emp-firstname").textContent,
+    LastName: document.getElementById("emp-lastname").textContent,
+    phone: document.getElementById("emp-phone").textContent,
+    username: document.getElementById("emp-email").textContent,
+    restaurant: document.getElementById("emp-restaurant").textContent
+  };
+  sessionStorage.setItem("demoUserStatic", JSON.stringify(user));
+  window.location.href = "editEmployeeAdmin.html";
+});
+
+
+  // Uzupełnij dane EMP001 jeśli istnieją w sessionStorage
+const user = JSON.parse(sessionStorage.getItem("demoUserStatic"));
+  if (user && user.identification === "EMP001") {
+    document.getElementById("emp-firstname").textContent = user.FirstName;
+    document.getElementById("emp-lastname").textContent = user.LastName;
+    document.getElementById("emp-phone").textContent = user.phone;
+    document.getElementById("emp-email").textContent = user.username;
+    document.getElementById("emp-restaurant").textContent = user.restaurant;
+  }
+
+  // Przycisk Create New - resetuj demoUser
+  document.getElementById("createNewBtn").addEventListener("click", () => {
+    sessionStorage.removeItem("demoUser");
+  });
+});
 </script>
+
+
 </body>
 </html>

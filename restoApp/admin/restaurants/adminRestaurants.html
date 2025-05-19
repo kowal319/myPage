@@ -2,9 +2,187 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Restaurant Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+          margin: 0;
+          background-image: url('/myPage/restoApp/tlo.jpg');
+          background-size: cover;
+          font-family: Arial, sans-serif;
+        }
+
+        .navbar-custom {
+          background-color: #f9a825;
+          padding: 10px 30px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .navbar-custom .nav-links a {
+          margin-left: 20px;
+          color: white;
+          font-weight: bold;
+          text-decoration: none;
+        }
+
+        .brand {
+          font-size: 24px;
+          color: white;
+          font-weight: bold;
+        }
+
+        .card-container {
+          width: 90%;
+          max-width: 1100px;
+          margin: 60px auto;
+          background-color: white;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          border-radius: 8px;
+          padding: 25px;
+        }
+
+        h5 {
+          color: #333;
+          font-weight: bold;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .btn-delete {
+          background-color: #dc3545;
+          border: none;
+          color: white;
+        }
+
+        .btn-delete:hover {
+          background-color: #c82333;
+        }
+
+        .btn-primary {
+          background-color: #007bff;
+          border: none;
+        }
+    </style>
 </head>
 <body>
 
+<!-- Navbar -->
+<div class="navbar-custom">
+    <div class="brand">RestoApp</div>
+    <div class="nav-links">
+        <a href="../adminHome.html">Home</a>
+        <a href="../users/adminUsers.html">Users</a>
+        <a href="../employee/adminEmployees.html">Employees</a>
+        <a href="../restaurants/adminRestaurants.html">Restaurants</a>
+        <a href="../menu/adminMenu.html">Menu</a>
+        <a href="../../userChoose.html">Logout</a>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="card-container">
+    <h5>Restaurants List</h5>
+
+    <div style="text-align: right; margin-bottom: 15px;">
+        <a href="createRestaurantAdmin.html" class="btn btn-success" id="createNewRestaurant">Create New Restaurant</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>No. tables</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="restaurant-table-body">
+        <!-- Static user -->
+        <tr id="R1-row">
+            <td>R1</td>
+            <td>Resto Zamojska</td>
+            <td>05-200 Warszawa, ul. Zamojska 123</td>
+            <td>zamojska@resto.com</td>
+            <td>123-456-789</td>
+            <td>12</td>
+            <td>
+                <button class="btn btn-delete btn-sm delete-static" data-row="R1-row">Usuń</button>
+            </td>
+        </tr>
+        <tr id="R2-row"><td>R2</td><td>Resto Nowogrodzka</td><td>05-200 Warszawa, ul. Nowogrodzka 13</td>
+            <td>nowogrodzka@resto.com</td><td>234-567-890</td><td>10</td>
+            <td><button class="btn btn-delete btn-sm delete-static" data-row="R2-row">Usuń</button></td></tr>
+        <tr id="R3-row"><td>R3</td><td>Resto Jesionowa</td><td>05-240 Warszawa, ul. Jesionowa 123</td>
+            <td>jesionowa@resto.com</td><td>345-678-901</td><td>15</td>
+            <td><button class="btn btn-delete btn-sm delete-static" data-row="R3-row">Usuń</button></td></tr>
+        <tr id="R4-row"><td>R4</td><td>Resto Belwederska</td>
+            <td>05-010 Warszawa, ul. Belwederska 321</td><td>belwederska@resto.com</td><td>456-789-012</td><td>8</td>
+            <td><button class="btn btn-delete btn-sm delete-static" data-row="R4-row">Usuń</button></td></tr>
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Dodawanie dynamicznych restauracji na górze
+    window.addEventListener('DOMContentLoaded', () => {
+      const restaurants = JSON.parse(sessionStorage.getItem('restaurants')) || [];
+      const tableBody = document.getElementById("restaurant-table-body");
+
+      restaurants.forEach(restaurant => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${restaurant.identification}</td>
+          <td>${restaurant.name}</td>
+          <td>${restaurant.address}</td>
+          <td>${restaurant.email}</td>
+          <td>${restaurant.phone}</td>
+          <td>${restaurant.tables}</td>
+
+          <td>
+            <button class="btn btn-primary btn-sm btn-edit">Edit</button>
+            <button class="btn btn-delete btn-sm btn-delete">Usuń</button>
+          </td>
+        `;
+
+        tableBody.insertBefore(row, tableBody.firstChild);
+
+        row.querySelector('.btn-edit').addEventListener('click', () => {
+          sessionStorage.setItem("demoUser", JSON.stringify(restaurant));
+          window.location.href = "editRestaurantAdmin.html";
+        });
+
+        row.querySelector('.btn-delete').addEventListener('click', () => {
+          if (confirm("Delete this restaurant?")) {
+            const updated = restaurants.filter(r => r.identification !== restaurant.identification);
+            sessionStorage.setItem('restaurants', JSON.stringify(updated));
+            row.remove();
+          }
+        });
+      });
+
+      // Statyczny usuń
+// Obsługa statycznego przycisku usuń
+document.querySelectorAll(".delete-static").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const rowId = btn.getAttribute("data-row");
+    if (confirm("Delete this restaurant?")) {
+      const row = document.getElementById(rowId);
+      if (row) row.remove();
+    }
+  });
+});
+
+      // Przygotuj tworzenie nowego
+      document.getElementById("createNewRestaurant").addEventListener("click", () => {
+        sessionStorage.removeItem("demoRestaurant");
+      });
+    });
+</script>
 </body>
 </html>

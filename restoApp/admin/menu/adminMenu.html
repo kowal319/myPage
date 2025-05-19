@@ -1,10 +1,326 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <title>Menu Produktów</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+    <style>
+        body {
+          margin: 0;
+          background-image: url('/myPage/restoApp/tlo.jpg');
+          background-size: cover;
+          font-family: Arial, sans-serif;
+        }
+
+        .navbar-custom {
+          background-color: #f9a825;
+          padding: 10px 30px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .navbar-custom .nav-links a {
+          margin-left: 20px;
+          color: white;
+          font-weight: bold;
+          text-decoration: none;
+        }
+
+        .brand {
+          font-size: 24px;
+          color: white;
+          font-weight: bold;
+        }
+
+        .container {
+          background-color: white;
+          margin-top: 40px;
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h4 {
+          margin-top: 40px;
+          font-weight: bold;
+          color: #333;
+        }
+
+        table {
+          margin-top: 10px;
+        }
+
+        .btn-delete {
+          background-color: #dc3545;
+          border: none;
+          color: white;
+          padding: 4px 12px;
+        }
+
+        .btn-delete:hover {
+          background-color: #c82333;
+        }
+    </style>
 </head>
 <body>
+
+<!-- Navbar -->
+<div class="navbar-custom">
+    <div class="brand">RestoApp</div>
+    <div class="nav-links">
+        <a href="../adminHome.html">Home</a>
+        <a href="../users/adminUsers.html">Users</a>
+        <a href="../employee/adminEmployees.html">Employees</a>
+        <a href="../restaurants/adminRestaurants.html">Restaurants</a>
+        <a href="../menu/adminMenu.html">Menu</a>
+        <a href="../../userChoose.html">Logout</a>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    <h2 class="mb-4">📋 Lista Produktów</h2>
+    <div class="text-right mb-3">
+        <a href="createProductAdmin.html" class="btn btn-primary">➕ Create New Product</a>
+    </div>
+
+    <div id="productsContainer"></div>
+
+    <!-- Statyczne kategorie -->
+
+    <!-- Pizza -->
+    <h4>🍕 Pizza</h4>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Cena</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Margherita</td>
+            <td>Pomidor, ser, bazylia</td>
+            <td>25.00 zł</td>
+            <td><button class="btn btn-delete btn-sm">Usuń</button></td>
+        </tr>
+        <tr>
+            <td>Capricciosa</td>
+            <td>Szynka, pieczarki, ser</td>
+            <td>29.00 zł</td>
+            <td><button class="btn btn-delete btn-sm">Usuń</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Makarony -->
+    <h4>🍝 Makarony</h4>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Cena</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Spaghetti Bolognese</td>
+            <td>Mięso wołowe, sos pomidorowy</td>
+            <td>30.00 zł</td>
+            <td><button class="btn btn-delete btn-sm">Usuń</button></td>
+        </tr>
+        <tr>
+            <td>Penne Alfredo</td>
+            <td>Śmietanowy sos, parmezan</td>
+            <td>28.00 zł</td>
+            <td><button class="btn btn-delete btn-sm">Usuń</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Burgery -->
+    <h4>🍔 Burgery</h4>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Cena</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Classic Burger</td>
+            <td>Wołowina, sałata, pomidor</td>
+            <td>27.00 zł</td>
+            <td><button class="btn btn-delete btn-sm">Usuń</button></td>
+        </tr>
+        <tr>
+            <td>Veggie Burger</td>
+            <td>Warzywny kotlet, sos tahini</td>
+            <td>26.00 zł</td>
+            <td><button class="btn btn-delete btn-sm">Usuń</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Desery -->
+    <h4>🍰 Desery</h4>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Cena</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Tiramisu</td>
+            <td>Włoski deser kawowy</td>
+            <td>14.00 zł</td>
+            <td><button class="btn btn-delete btn-sm">Usuń</button></td>
+        </tr>
+        <tr>
+            <td>Sernik</td>
+            <td>Z owocami sezonowymi</td>
+            <td>13.00 zł</td>
+            <td><button class="btn btn-delete btn-sm">Usuń</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Napoje -->
+    <h4>🥤 Napoje</h4>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Cena</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Coca-Cola</td>
+            <td>330ml</td>
+            <td>6.00 zł</td>
+            <td><button class="btn btn-delete btn-sm">Usuń</button></td>
+        </tr>
+        <tr>
+            <td>Lemoniada</td>
+            <td>Domowa, 300ml</td>
+            <td>8.00 zł</td>
+            <td><button class="btn btn-delete btn-sm">Usuń</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Script -->
+<script>
+    const products = JSON.parse(sessionStorage.getItem("products")) || [];
+
+    // Grupuj produkty dynamiczne po kategorii
+    const grouped = {};
+    products.forEach(product => {
+      if (!grouped[product.category]) {
+        grouped[product.category] = [];
+      }
+      grouped[product.category].push(product);
+    });
+
+    const container = document.getElementById("productsContainer");
+
+    function findTableForCategory(category) {
+      const headers = Array.from(document.querySelectorAll("h4"));
+      for (let h of headers) {
+        if (h.textContent.trim().includes(category)) {
+          const next = h.nextElementSibling;
+          if (next && next.tagName === "TABLE") return next.querySelector("tbody");
+        }
+      }
+      return null;
+    }
+
+    Object.keys(grouped).forEach(category => {
+      const tbody = findTableForCategory(category);
+
+      if (tbody) {
+        grouped[category].forEach(product => {
+          const tr = document.createElement("tr");
+          tr.setAttribute("data-id", product.id);
+          tr.innerHTML = `
+            <td>${product.name}</td>
+            <td>${product.description}</td>
+            <td>${product.price} zł</td>
+            <td><button class="btn btn-danger btn-sm" onclick="deleteProduct('${product.id}')">Usuń</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } else {
+        const tableHTML = `
+          <h4 class="mt-4">${category}</h4>
+          <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th>Nazwa produktu</th>
+                <th>Opis</th>
+                <th>Cena (zł)</th>
+                <th>Akcja</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${grouped[category].map(product => `
+                <tr data-id="${product.id}">
+                  <td>${product.name}</td>
+                  <td>${product.description}</td>
+                  <td>${product.price} zł</td>
+                  <td><button class="btn btn-danger btn-sm" onclick="deleteProduct('${product.id}')">Usuń</button></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
+        container.innerHTML += tableHTML;
+      }
+    });
+
+    // Obsługa statycznych przycisków usuń (dla wcześniej zakodowanych produktów)
+document.querySelectorAll(".btn-delete").forEach(button => {
+  button.addEventListener("click", function () {
+    const tr = this.closest("tr");
+    const name = tr.querySelector("td").textContent.trim();
+
+    const confirmDelete = confirm(`Czy na pewno chcesz usunąć produkt "${name}"?`);
+    if (!confirmDelete) return;
+
+    // Spróbuj usunąć z sessionStorage na podstawie nazwy
+    const updated = products.filter(p => p.name !== name);
+    sessionStorage.setItem("products", JSON.stringify(updated));
+
+    // Usuń wiersz z DOM
+    tr.remove();
+  });
+});
+
+    function deleteProduct(id) {
+      const confirmDelete = confirm("Czy na pewno chcesz usunąć ten produkt?");
+      if (!confirmDelete) return;
+
+      const updated = products.filter(p => p.id !== id);
+      sessionStorage.setItem("products", JSON.stringify(updated));
+      location.reload();
+    }
+</script>
 
 </body>
 </html>

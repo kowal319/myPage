@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Create New Product</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('/myPage/restoApp/tlo.jpg');
+      background-size: cover;
+      background-position: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar-custom {
+      background-color: #f9a825;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-custom .nav-links a {
+      margin-left: 20px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .brand {
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .card-container {
+      display: flex;
+      width: 50%;
+      margin: 60px auto;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      padding: 20px;
+      flex-direction: column;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar-custom">
+  <div class="brand">RestoApp</div>
+  <div class="nav-links">
+    <a href="../adminHome.html">Home</a>
+    <a href="../users/adminUsers.html">Users</a>
+    <a href="../employee/adminEmployees.html">Employees</a>
+    <a href="../restaurants/adminRestaurants.html">Restaurants</a>
+    <a href="../menu/adminMenu.html">Menu</a>
+    <a href="../../userChoose.html">Logout</a>
+  </div>
+</div>
+
+<!-- Product Form -->
+<div class="card-container">
+  <form id="productForm">
+    <div class="form-group">
+      <label for="productName">Nazwa produktu</label>
+      <input type="text" class="form-control" id="productName" required>
+    </div>
+    <div class="form-group">
+      <label for="productDescription">Krótki opis</label>
+      <input type="text" class="form-control" id="productDescription" required>
+    </div>
+    <div class="form-group">
+      <label for="productPrice">Cena (zł)</label>
+      <input type="number" step="0.01" class="form-control" id="productPrice" required>
+    </div>
+    <div class="form-group">
+      <label for="productCategory">Kategoria</label>
+      <select class="form-control" id="productCategory" required>
+        <option value="">-- Wybierz kategorię --</option>
+        <option value="Pizza">Pizza</option>
+        <option value="Makarony">Makarony</option>
+        <option value="Burgery">Burgery</option>
+        <option value="Desery">Desery</option>
+        <option value="Napoje">Napoje</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Zapisz produkt</button>
+    <a href="adminMenu.html" class="btn btn-secondary">Anuluj</a>
+  </form>
+</div>
+
+<script>
+  document.getElementById("productForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const newProduct = {
+      id: "PRD" + String(Date.now()).slice(-6),
+      name: document.getElementById("productName").value,
+      description: document.getElementById("productDescription").value,
+      price: parseFloat(document.getElementById("productPrice").value).toFixed(2),
+      category: document.getElementById("productCategory").value
+    };
+
+    const products = JSON.parse(sessionStorage.getItem("products")) || [];
+    products.unshift(newProduct);
+    sessionStorage.setItem("products", JSON.stringify(products));
+
+    alert("Produkt zapisany!");
+    window.location.href = "adminMenu.html";
+  });
+</script>
+
+</body>
+</html>

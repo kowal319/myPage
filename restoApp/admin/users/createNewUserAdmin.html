@@ -2,71 +2,134 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Create New User</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
   <style>
     body {
-      margin: 0;
-      background-color: #f4f4f4;
-      font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-image: url('/myPage/restoApp/tlo.jpg');
+        background-size: cover;
+        background-position: center;
+        font-family: Arial, sans-serif;
     }
 
-    .form-container {
-      max-width: 500px;
-      margin: 60px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    .navbar-custom {
+        background-color: #f9a825;
+        padding: 10px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    h3 {
-      text-align: center;
-      margin-bottom: 20px;
+    .navbar-custom .nav-links a {
+        margin-left: 20px;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .brand {
+        font-size: 24px;
+        color: white;
+        font-weight: bold;
+    }
+
+    .card-container {
+        display: flex;
+        width: 50%;
+        margin: 60px auto;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        margin-top: 10px;
     }
   </style>
 </head>
+
 <body>
-<div class="form-container">
-  <h3>Create New User</h3>
+
+<!-- Header / Navbar -->
+<div class="navbar-custom">
+  <div class="brand">RestoApp</div>
+  <div class="nav-links">
+    <a href="../adminHome.html">Home</a>
+    <a href="../users/adminUsers.html">Users</a>
+    <a href="adminEmployees.html">Employees</a>
+    <a href="../restaurants/adminRestaurants.html">Restaurants</a>
+    <a href="../menu/adminMenu.html">Menu</a>
+    <a href="../../userChoose.html">Logout</a>
+
+  </div>
+</div>
+
+<!-- User Details Form -->
+<div class="card-container">
   <form id="userForm">
     <div class="form-group">
-      <label>First Name</label>
-      <input type="text" class="form-control" id="firstname">
+      <label for="identification">Identification</label>
+      <input type="text" class="form-control" id="identification" name="identification" required />
     </div>
     <div class="form-group">
-      <label>Last Name</label>
-      <input type="text" class="form-control" id="lastname">
+      <label for="FirstName">First Name:</label>
+      <input type="text" class="form-control" id="FirstName" name="FirstName" required />
     </div>
     <div class="form-group">
-      <label>Phone</label>
-      <input type="text" class="form-control" id="phone">
+      <label for="LastName">Last Name:</label>
+      <input type="text" class="form-control" id="LastName" name="LastName" />
     </div>
     <div class="form-group">
-      <label>Email</label>
-      <input type="email" class="form-control" id="username">
+      <label for="username">Email:</label>
+      <input type="email" class="form-control" id="username" name="username" />
     </div>
-    <button type="submit" class="btn btn-success btn-block">Save</button>
+    <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input type="text" class="form-control" id="phone" name="phone" />
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="adminUsers.html" class="btn btn-secondary">Cancel</a>
   </form>
+
 </div>
 
 <script>
   document.getElementById("userForm").addEventListener("submit", function (e) {
     e.preventDefault();
-
-    const users = JSON.parse(sessionStorage.getItem("users")) || [];
-    const newUser = {
-      identification: "USR" + String(Date.now()).slice(-5),
-      FirstName: document.getElementById("firstname").value,
-      LastName: document.getElementById("lastname").value,
+    const newEmployee = {
+      identification: document.getElementById("identification").value,
+      FirstName: document.getElementById("FirstName").value,
+      LastName: document.getElementById("LastName").value,
+      username: document.getElementById("username").value,
       phone: document.getElementById("phone").value,
-      username: document.getElementById("username").value
     };
 
-    users.unshift(newUser);
-    sessionStorage.setItem("users", JSON.stringify(users));
+    let employees = JSON.parse(sessionStorage.getItem("employeeList")) || [];
+
+    // Sprawdź, czy edytujemy istniejącego pracownika (po ID)
+    const index = employees.findIndex(emp => emp.identification === newEmployee.identification);
+    if (index !== -1) {
+      employees[index] = newEmployee;
+    } else {
+      employees.push(newEmployee);
+    }
+
+    sessionStorage.setItem("employeeList", JSON.stringify(employees));
+    alert("Dane pracownika zapisane!");
     window.location.href = "adminUsers.html";
   });
 </script>
+
 </body>
 </html>
