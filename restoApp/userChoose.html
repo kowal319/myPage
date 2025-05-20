@@ -3,77 +3,99 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <title>RestoApp Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RestoApp - Role Selection</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
     <style>
         body {
-            padding: 20px;
-            height: 100vh;
-            background-image: url('path_to_your_background_image.jpg'); /* Podmień na ścieżkę do swojego tła */
+            margin: 0;
+            padding: 0;
+            background-image: url('/myPage/restoApp/tlo.jpg');
             background-size: cover;
             background-position: center;
+            font-family: Arial, sans-serif;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            color: #fff;
         }
 
-        .container {
-            background-color: rgba(0, 0, 0, 0.7); /* Ciemniejsze tło kontenera, by tekst był bardziej czytelny */
-            padding: 30px;
+        .card-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
             border-radius: 10px;
+            width: 90%;
+            max-width: 900px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
-        .role-btn {
-            margin: 10px 0;
-            width: 100%;
+        .role-section {
+            margin-bottom: 30px;
+        }
+
+        .role-section h3 {
+            color: #f9a825;
+            font-weight: bold;
+        }
+
+        .role-section p {
+            margin: 5px 0 15px;
+            color: #555;
         }
 
         .btn-role {
-            font-size: 1.2rem;
-            padding: 15px;
-            background-color: #007bff;
-            border-color: #007bff;
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
             color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
             transition: background-color 0.3s;
+            text-decoration: none;
         }
 
         .btn-role:hover {
             background-color: #0056b3;
-            border-color: #0056b3;
         }
-
-        /* Można dodać jeszcze inne style dla każdego przycisku, jeśli chcesz np. różne kolory dla ról */
     </style>
 </head>
 
 <body>
-<div class="container">
-    <h1>Witaj w Demo RestoApp</h1>
-    <p>Wybierz swoją rolę, aby rozpocząć:</p>
 
-    <!-- Opcje do wyboru -->
-    <div class="role-btn">
-        <a href="/myPage/restoApp/admin/adminHome.html" class="btn btn-role">Widok Admina</a>
+<div class="card-container">
+    <h1>Choose Your Role</h1>
+
+    <!-- USER -->
+    <div class="role-section">
+        <h3>User View</h3>
+        <p>This view allows users to place orders, view their order history, and update personal information.</p>
+        <a href="/myPage/restoApp/user/userDetails.html" class="btn-role">Enter User Panel</a>
     </div>
-    <div class="role-btn">
-        <a href="/myPage/restoApp/employee/employeeHome.html" class="btn btn-role">Widok Pracownika</a>
+
+    <!-- EMPLOYEE -->
+    <div class="role-section">
+        <h3>Employee View</h3>
+        <p>Employees can access order history and update payment status.</p>
+        <a href="/myPage/restoApp/employee/employeeHome.html" class="btn-role">Enter Employee Panel</a>
     </div>
-    <div class="role-btn">
-        <a href="/myPage/restoApp/user/userDetails.html" class="btn btn-role">Widok Użytkownika</a>
+
+    <!-- ADMIN -->
+    <div class="role-section">
+        <h3>Admin View</h3>
+        <p>Admins can manage users, employees, restaurants, and menu items – including adding and editing all entities.</p>
+        <a href="/myPage/restoApp/admin/adminHome.html" class="btn-role">Enter Admin Panel</a>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
 </html>
